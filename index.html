@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadeau 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--letter-w:400px;--letter-h:530px;}
+*{box-sizing:border-box;}
+body,html{margin:0;padding:0;height:100%;background:#000;font-family:'Poppins',sans-serif;display:flex;justify-content:center;align-items:center;overflow:hidden;}
+
+.env-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-420px);transition:transform 1.6s cubic-bezier(.2,.9,.2,1);z-index:15;}
+#envelope{font-size:160px;cursor:pointer;filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));transition: transform .25s ease;}
+#lock{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#222;color:#fff;padding:20px 26px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;z-index:40;text-align:center;}
+#lock h2{margin:0 0 8px;font-family:'Poppins',sans-serif;font-size:24px;color:#ff79c6;}
+.codeRow{margin-top:6px;}
+.codeDigit{width:50px;height:56px;font-size:34px;text-align:center;border-radius:8px;border:none;margin:6px;background:#fff;color:#222;}
+#msgGood,#msgBad,#msgBadNote{display:none;font-weight:700;margin-top:10px;text-align:center;font-family:'Poppins',sans-serif;}
+#msgGood{color:#4ef08a;}
+#msgBad{color:#ff4f4f;}
+#msgBadNote{color:#ffd6d6;}
+#letter{position:absolute;width:var(--letter-w);height:var(--letter-h);background:#fff;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,0.6);overflow:hidden;z-index:20;transition: transform .9s cubic-bezier(.2,.9,.2,1);}
+.page{position:absolute;width:100%;height:100%;display:none;padding:34px;padding-top:40px;font-family:"Great Vibes",cursive;font-size:26px;color:#333;text-align:center;}
+.page.active{display:block;}
+.navButton{position:absolute;bottom:14px;font-size:32px;cursor:pointer;color:#3b82f6;user-select:none;}
+#prev{left:16px;}#next{right:16px;}
+.particle{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;opacity:0.85;background: gold;box-shadow:0 0 8px gold,0 0 12px yellow;animation: float 1.2s forwards;}
+@keyframes float{0%{transform: translate(0,0) scale(1);opacity:1;}100%{transform: translate(var(--x),var(--y)) scale(0.3);opacity:0;}}
+.falling{position:fixed;top:-80px;pointer-events:none;z-index:9999;font-size:26px;opacity:.95;animation: fall linear forwards;}
+@keyframes fall{0%{transform: translateY(-80px) rotate(0deg);}100%{transform: translateY(110vh) rotate(360deg);}}
+#candle{position:fixed;right:18px;bottom:18px;font-size:56px;opacity:0;transition:opacity .6s ease;filter: drop-shadow(0 0 10px #ffd);z-index:60;}
+#muteBtn{position:fixed;left:12px;top:12px;z-index:70;background:#fff;color:#000;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:16px;}
+@media(max-width:640px){:root{--letter-w:320px;--letter-h:420px;}#envelope{font-size:120px;}.codeDigit{width:44px;height:48px;font-size:26px;margin:4px;}}
+</style>
+</head>
+<body>
+<audio id="bgMusic" preload="auto" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2021/09/07/audio_54b8e34f23.mp3?filename=magical-65390.mp3" type="audio/mpeg">
+</audio>
+<audio id="magicSound" preload="auto">
+  <source src="https://www.soundjay.com/misc/sounds/magic-chime-01.mp3" type="audio/mpeg">
+</audio>
+<audio id="errorSound" preload="auto">
+  <source src="https://www.soundjay.com/button/sounds/beep-10.mp3" type="audio/mpeg">
+</audio>
+
+<button id="muteBtn">🔊</button>
+
+<div class="env-wrap" id="envWrap"><div id="envelope">💌</div></div>
+
+<div id="lock">
+<h2>Code Seren & ML</h2>
+<p>Entrez le code :</p>
+<div class="codeRow">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+</div>
+<div id="msgGood">✔ Code bon !<br>Bravo baby t'es trop forte je savais que tu y arriverais 😘</div>
+<div id="msgBad">✖ Code incorrect !</div>
+<div id="msgBadNote">Aller baby fais un effort 😘</div>
+</div>
+
+<div id="letter">
+<div class="page active">Mon amour, je voulais te dire… ❤️</div>
+<div class="page">Chaque moment passé avec toi est magique… ✨</div>
+<div class="page">Tu comptes plus que tout pour moi… 💖</div>
+<div class="page">Merci d'être dans ma vie 💖</div>
+<div id="prev" class="navButton">⬅️</div>
+<div id="next" class="navButton">➡️</div>
+</div>
+
+<div id="candle">🕯️</div>
+
+<script>
+const envWrap=document.getElementById('envWrap');
+const envelope=document.getElementById('envelope');
+const lock=document.getElementById('lock');
+const digits=Array.from(document.querySelectorAll('.codeDigit'));
+const msgGood=document.getElementById('msgGood');
+const msgBad=document.getElementById('msgBad');
+const msgBadNote=document.getElementById('msgBadNote');
+const letter=document.getElementById('letter');
+const pages=Array.from(document.querySelectorAll('.page'));
+const prevBtn=document.getElementById('prev');
+const nextBtn=document.getElementById('next');
+const candle=document.getElementById('candle');
+const bgMusic=document.getElementById('bgMusic');
+const magicSound=document.getElementById('magicSound');
+const errorSound=document.getElementById('errorSound');
+const muteBtn=document.getElementById('muteBtn');
+
+let currentPage=0,fallInterval=null,muted=false,successTimer=null,wrongTimer=null,codeValidated=false;
+
+setTimeout(()=>{envWrap.style.transform='translate(-50%,-50%) translateY(0)';},450);
+
+envWrap.addEventListener('click',()=>{
+  if(codeValidated) return;
+  lock.style.display='block';
+  envelope.style.transform='translateY(20px) scale(0.94)';
+  setTimeout(()=>envelope.style.transform='translateY(0) scale(1)',220);
+  digits[0].focus();
+  createParticles(letter,50,45,40);
+});
+
+digits.forEach((input,idx)=>{
+input.addEventListener('input',()=>{
+input.value=input.value.replace(/\D/g,'');
+if(input.value && idx<digits.length-1) digits[idx+1].focus();
+checkCode();
+});
+input.addEventListener('keydown',(e)=>{
+if(e.key==='Backspace' && !input.value && idx>0) digits[idx-1].focus();
+});
+});
+
+function checkCode(){
+const code=digits.map(d=>d.value).join('');
+if(code.length===4) validateCode(code);
+}
+
+function createParticles(container,xPct=50,yPct=50,count=30){
+for(let i=0;i<count;i++){
+const p=document.createElement('div');
+p.className='particle';
+const angle=Math.random()*2*Math.PI;
+const dist=Math.random()*140+40;
+const rect=container.getBoundingClientRect();
+const startX=rect.left+rect.width*(xPct/100);
+const startY=rect.top+rect.height*(yPct/100);
+p.style.left=startX+'px';
+p.style.top=startY+'px';
+const dx=Math.cos(angle)*dist;
+const dy=Math.sin(angle)*dist-80;
+p.style.setProperty('--x',dx+'px');
+p.style.setProperty('--y',dy+'px');
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),1400);
+}
+}
+
+function startFalling(){
+if(fallInterval) return;
+fallInterval=setInterval(()=>{
+const el=document.createElement('div');
+el.className='falling';
+el.textContent=Math.random()>0.5?'💗':'🌹';
+el.style.left=(Math.random()*100)+'vw';
+el.style.fontSize=(22+Math.random()*20)+'px';
+el.style.opacity=(0.6+Math.random()*0.4);
+el.style.animationDuration=(4+Math.random()*5)+'s';
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),10000);
+},300);
+}
+
+function showPage(idx){
+pages.forEach(p=>p.classList.remove('active'));
+pages[idx].classList.add('active');
+currentPage=idx;
+createParticles(letter,50,50,40);
+}
+
+nextBtn.addEventListener('click',()=>{if(currentPage<pages.length-1) showPage(currentPage+1);});
+prevBtn.addEventListener('click',()=>{if(currentPage>0) showPage(currentPage-1);});
+document.addEventListener('keydown',(e)=>{if(letter.style.transform.includes('scale(1)')){if(e.key==='ArrowRight') nextBtn.click(); if(e.key==='ArrowLeft') prevBtn.click();}});
+
+muteBtn.addEventListener('click',()=>{
+muted=!muted;
+bgMusic.muted=muted;
+magicSound.muted=muted;
+errorSound.muted=muted;
+muteBtn.textContent=muted?'🔇':'🔊';
+});
+
+function validateCode(code){
+if(code==='7777'){
+codeValidated=true;
+msgBad.style.display='none';
+msgBadNote.style.display='none';
+msgGood.style.display='block';
+magicSound.currentTime=0;magicSound.play().catch(()=>{});
+if(successTimer) clearTimeout(successTimer);
+successTimer=setTimeout(()=>{
+msgGood.style.display='none';
+codeValidated=false;
+lock.style.display='none';
+envWrap.style.transform='translate(-50%,-50%) translateY(-150px) scale(0.8) rotate(-10deg)';
+envelope.style.transform='translateY(-120px) scale(.7)';
+createParticles(letter,50,45,40);
+setTimeout(()=>{
+letter.style.transform='translate(-50%,-50%) scale(1)';
+showPage(0);
+startFalling();
+candle.style.opacity=1;
+bgMusic.volume=0.35;bgMusic.play().catch(()=>{});
+},200);
+},5000);
+}else{
+msgGood.style.display='none';
+msgBad.style.display='block';
+msgBadNote.style.display='block';
+errorSound.currentTime=0;errorSound.play().catch(()=>{});
+lock.style.transform='translate(-50%,-50%) translateX(-6px)';
+setTimeout(()=>lock.style.transform='translate(-50%,-50%) translateX(0)',140);
+if(wrongTimer) clearTimeout(wrongTimer);
+wrongTimer=setTimeout(()=>{digits.forEach(d=>d.value='');digits[0].focus();msgBad.style.display='none';msgBadNote.style.display='none';},1400);
+}
+}
+</script>
+</body>
+</html>
