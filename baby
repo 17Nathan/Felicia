@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadeau 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--letter-w:400px;--letter-h:530px;}
+*{box-sizing:border-box;}
+body,html{margin:0;padding:0;height:100%;background:#000;font-family:'Poppins',sans-serif;display:flex;justify-content:center;align-items:center;overflow:hidden;}
+
+.env-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-420px);transition:transform 1.6s cubic-bezier(.2,.9,.2,1);z-index:15;}
+#envelope{font-size:160px;cursor:pointer;filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));transition: transform .25s ease;}
+#lock{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#222;color:#fff;padding:20px 26px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;z-index:40;text-align:center;}
+#lock h2{margin:0 0 8px;font-family:'Poppins',sans-serif;font-size:24px;color:#ff79c6;}
+.codeRow{margin-top:6px;}
+.codeDigit{width:50px;height:56px;font-size:34px;text-align:center;border-radius:8px;border:none;margin:6px;background:#fff;color:#222;}
+#msgGood,#msgBad,#msgBadNote{display:none;font-weight:700;margin-top:10px;text-align:center;font-family:'Poppins',sans-serif;}
+#msgGood{color:#4ef08a;}
+#msgBad{color:#ff4f4f;}
+#msgBadNote{color:#ffd6d6;}
+#letter{position:absolute;width:var(--letter-w);height:var(--letter-h);background:#fff;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,0.6);overflow:hidden;z-index:20;transition: transform .9s cubic-bezier(.2,.9,.2,1);}
+.page{position:absolute;width:100%;height:100%;display:none;padding:34px;padding-top:40px;font-family:"Great Vibes",cursive;font-size:26px;color:#333;text-align:center;}
+.page.active{display:block;}
+.navButton{position:absolute;bottom:14px;font-size:32px;cursor:pointer;color:#3b82f6;user-select:none;}
+#prev{left:16px;}#next{right:16px;}
+.particle{position:absolute;width:6px;height:6px;border-radius:50%;pointer-events:none;opacity:0.85;background: gold;box-shadow:0 0 8px gold,0 0 12px yellow;animation: float 1.2s forwards;}
+@keyframes float{0%{transform: translate(0,0) scale(1);opacity:1;}100%{transform: translate(var(--x),var(--y)) scale(0.3);opacity:0;}}
+.falling{position:fixed;top:-80px;pointer-events:none;z-index:9999;font-size:26px;opacity:.95;animation: fall linear forwards;}
+@keyframes fall{0%{transform: translateY(-80px) rotate(0deg);}100%{transform: translateY(110vh) rotate(360deg);}}
+#candle{position:fixed;right:18px;bottom:18px;font-size:56px;opacity:0;transition:opacity .6s ease;filter: drop-shadow(0 0 10px #ffd);z-index:60;}
+#muteBtn{position:fixed;left:12px;top:12px;z-index:70;background:#fff;color:#000;border:none;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:16px;}
+@media(max-width:640px){:root{--letter-w:320px;--letter-h:420px;}#envelope{font-size:120px;}.codeDigit{width:44px;height:48px;font-size:26px;margin:4px;}}
+</style>
+</head>
+<body>
+<audio id="bgMusic" preload="auto" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2021/09/07/audio_54b8e34f23.mp3?filename=magical-65390.mp3" type="audio/mpeg">
+</audio>
+<audio id="magicSound" preload="auto">
+  <source src="https://www.soundjay.com/misc/sounds/magic-chime-01.mp3" type="audio/mpeg">
+</audio>
+<audio id="errorSound" preload="auto">
+  <source src="https://www.soundjay.com/button/sounds/beep-10.mp3" type="audio/mpeg">
+</audio>
+
+<button id="muteBtn">🔊</button>
+
+<div class="env-wrap" id="envWrap"><div id="envelope">💌</div></div>
+
+<div id="lock">
+<h2>Code Seren & ML</h2>
+<p>Entrez le code :</p>
+<div class="codeRow">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+<input class="codeDigit" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+</div>
+<div id="msgGood">✔ Code bon !<br>Bravo baby t'es trop forte je savais que tu y arriverais 😘</div>
+<div id="msgBad">✖ Code incorrect !</div>
+<div id="msgBadNote">Aller baby fais un effort 😘</div>
+</div>
+
+<div id="letter">
+<div class="page active">Mon amour je t’écris ce message aujourd’hui c’est un peu comme mon but finalement. Après avoir passer toutes ces matin, tous ces jours à t’écrire des pavés tous les matins, celui là plus que les autres, dans lesquels je fais en sortes de te témoigner tout mon amour,  </div>
+<div class="page">dans ces textes qui me prennent 500, 1000, 2000, 4000, 5000 mots, dans ces textes là je fais de mon mieux pour te prouver ne serait-ce qu’à 10% l’étendu de mon amour. T’as souvent dis durant des débat, des discussions que j’étais jeunes et que je risquais de retomber amoureux,  </div>
+<div class="page">mais j’ai envie de te dire une chose mon amour c’est impossible. Même si tu pense ça, j’ai un amour unique, un amour que je suis capable de donner qu’une seule fois. J’ai passé 19 ans de ma vie sans céder à la tentation d’un rapport sexuel pour une simple et bonne raison,  </div>
+<div class="page">donner ça à la femme que j’aime, à toi cette femme que j’aime. Je pense pas que tu te rendent compte réellement mais ta change ma vie, tu y ai rentré avec facilité comme si toi et moi c’était évident, c’était écrit, mais parce que ça l’ai bébé. Je te laisserai jamais quitter ma vie,  </div>
+<div class="page">je ferais tout pour te garder à mes côtés, pour tenir mes promesses comme la plus importante, celle de jamais te lâcher, celle qui m’a mené à là aujourd’hui, qui nous a mené à là aujourd’hui. T’écrire ce message c’est bien plus que ce simple rituel qui a alimenté notre relation,  </div>
+<div class="page">je te dis tout, te dévoue mon amour. Je veux que tu comprennes bébé t’es bien plus qu’un amour, t’es une âme, mon âme, celle qui me guide, celle qui brille en moi, celle qui me fais briller, celle qui fais briller mes yeux, mon cœur et ma voix. Si je t’ai fais tout ça, si j’ai choisi de t’écris tout ça,  </div>
+<div class="page">de te faire cette page d’accueil, c’est pour une bonne raison. Dans cette carte où je devais à la base écrire 2, 3 mots comme pour l’amour de ma vie ou pour toi ma femme, cette carte où tu est censé marqué des mots d’amour, dire à la personne que tu aime ce que tu ressent en quelque mots, pour moi c’était impossible.  </div>
+<div class="page">J’avais pas assez de place, j’avais besoin de plus que de t’écrire 2, 3 mots, besoin de plus d’espaces pour te dire ce que je ressens bébé. Si j’ai pris la peine de faire tout ça, de t’écrire, de faire cette page d’accueil, c’est parce que je t’aime depuis que t’as mis tes magnifique pied dans ma vie mon amour.  </div>
+<div class="page">Tu m’apporte un bien tu peux pas avoir idée mon cœur. Tu sais pas forcément mais ce message je l’ai écris sur plusieurs jours, je prenais vraiment mon temps, et aujourd’hui c’est un jour un peu spécial pour moi bébé, et c’est aujourd’hui plus que jamais que je me suis rendu compte que tes simples mots,  </div>
+<div class="page">un simple je t’aime ou love ou une simple notification, un simple message peux me faire tant de bien, peux soulager toute la peine que je peux avoir en moi. Voir que tu fais de ton mieux pour me réconforter et montrer que t’es là pour moi, que t’es présente dans ma vie,  </div>
+<div class="page">que t’es cette épaule sur laquelle je peux m’appuyer, cette main que je peux prendre pour me relever, ces mêmes mains qui me pousseront à aller de l’avant, à devenir la meilleur version de moi possible, cette version de moi où t’es à mes côtés et je suis au tiens.  </div>
+<div class="page">Voir la sensibilité dont tu peux faire preuve ça me touche, et comme t’as su être présente pour moi aujourd’hui je veux l’être pour toi. Je veux que tu sache que quoi qu’il arrive ma vie c’est avec toi que je veux là passer, avec toi et toi seul.  </div>
+<div class="page">C’est ce doux visage que je veux voir en premier quand je me réveille et en dernier quand je m’endors, et même dans mes rêves les plus fous c’est avec toi que je veux être tout le temps. J’veux être là pour toi, être cette épaule sur laquelle tu peux te poser,  </div>
+<div class="page">cette main qui t’aidera à te relevé quoi qu’il arrive, et celle qui te pousseront à réalise tes projets les plus beau, les plus grand, les plus fou. T’es une femme fascinant, si belle, si drôle, si gentil, si attentionné, si inspirante, sans blague je pèse mes mots, t’es si parfaite.  </div>
+<div class="page">Depuis qu’on est ensemble je m’inspire de toi pour vivre, j’arrive dans des situations complexe et je me dis qu’est-ce que Félicia aurait fais, qu’est-ce qu’elle voudrait que je fasses, ou même des choses que je peux appréhender, je me dis aller il faut que je le fasse au moins pour rendre fier celle que j’aime,  </div>
+<div class="page">celle qui change ma vie et j’y vais, je fonce et fais de mon mieux pour réussir, réussir à te rendre fier, réussir à te combler de bonheur, réussir à voir ce jolie visage esquisser un magnifique sourire, ce sourire qui WOW me rend dingue, ce sourire qui m’emmène en apesanteur,  </div>
+<div class="page">qui me fais flotter sur un nuage, qui me coupe de la réalité, m’emmène dans un autre univers, au portes du paradis, qui me fais oublier tout ce qu’il ce passe, qui me fais devenir aveugle et oublier tout le malheur qui peux m’entourer. T’es ce rayon de soleil qui a illuminé mon chemin vers la liberté,  </div>
+<div class="page">je t’en ai déjà parlé mais j’a toujours chercher à être quelqu’un d’autre, pour faire rire, ou faire peur, ou être admiré, mais avec toi c’est si différent, c’est bien plus que naturel. Ma personnalité était enfouie dans une prison de noirceur, complètement perdu au fin fond de mon esprit,  </div>
+<div class="page">de mon cœur, de mon corps, mais t’es arrivé comme ça, sans prévenir, quand je m’y attendais le moins. T’as était ce rayons de soleil, t’es venu détacher c’est menottes qui emprisonné ma personnalité, et t’as était cette lumière qui m’a éclairé le chemin.  </div>
+<div class="page">J’ai jamais eu besoin de me faire passer par quelqu’un d’autre, juste moi, Nathan. Tout comme toi j’ai appris à le connaître et j’apprend encore, jsuis jeune comme t’aime si bien le dire, et j’ai encore beaucoup de choses à découvrir mais c’est avec toi que je veux les découvrir,  </div>
+<div class="page">apprendre à le connaître, voyager et visiter le monde, apprendre plein de choses, apprendre à bien écrire aussi parce que c’est catastrophique mes fautes, heureusement que chat gpt est là sinon t’es yeux pleurerais, ce que je refuse de voir.  </div>
+<div class="page">T’as eu cette facilité à faire briller les miens, voir ton reflet ou juste parler ou penser à toi suffit à illuminer mon regard, mon visage, et je veux voir ce regard chez toi aussi, voir tes yeux briller même si tu refuse de me regarder dans les yeux, je veux voir ce regard d’amour.  </div>
+<div class="page">Depuis ce jour où jsuis rentrer dans cette hôpital ma vie a changé, jsuis dingue de nous, dingue de notre relation, dingue de tout, et regrette en rien toutes c’est épreuves, toutes c’est dispute, toutes c’est prise de tête ont fait de cette relation ce qu’elle ai aujourd’hui,  </div>
+<div class="page">une histoire si magique, une histoire que je suis impatient de raconter à nos enfants, parce que oui bébé quand je te disais que je voulais faire ma vie avec toi, avoir des enfants, fonder une famille, j’étais bien sincère. Jvais vivre avec toi et avoir ma famille, que tu porte mon nom de famille,  </div>
+<div class="page">qu’on ai des minis nous, plutôt des minis toi, que je puisse t’admirer le plus possible, que je puisse admirer le fruit de ton travail, le fruit de toutes cette beauté le plus possible. Je t’aime mon amour, ma beauté, ma femme, ma confidente, ma confiance, mon âme sœur,  </div>
+<div class="page">celle pour qui mon cœur bat, je t’aime bébé d’amour, ma princesse, ma foi, ma chérie, mon amour, je t’aime mon bébé d’amour, Merci d'être dans ma vie 💖</div>
+<div id="prev" class="navButton">⬅️</div>
+<div id="next" class="navButton">➡️</div>
+</div>
+
+<div id="candle">🕯️</div>
+
+<script>
+const envWrap=document.getElementById('envWrap');
+const envelope=document.getElementById('envelope');
+const lock=document.getElementById('lock');
+const digits=Array.from(document.querySelectorAll('.codeDigit'));
+const msgGood=document.getElementById('msgGood');
+const msgBad=document.getElementById('msgBad');
+const msgBadNote=document.getElementById('msgBadNote');
+const letter=document.getElementById('letter');
+const pages=Array.from(document.querySelectorAll('.page'));
+const prevBtn=document.getElementById('prev');
+const nextBtn=document.getElementById('next');
+const candle=document.getElementById('candle');
+const bgMusic=document.getElementById('bgMusic');
+const magicSound=document.getElementById('magicSound');
+const errorSound=document.getElementById('errorSound');
+const muteBtn=document.getElementById('muteBtn');
+
+let currentPage=0,fallInterval=null,muted=false,successTimer=null,wrongTimer=null,codeValidated=false;
+
+setTimeout(()=>{envWrap.style.transform='translate(-50%,-50%) translateY(0)';},450);
+
+envWrap.addEventListener('click',()=>{
+  if(codeValidated) return;
+  lock.style.display='block';
+  envelope.style.transform='translateY(20px) scale(0.94)';
+  setTimeout(()=>envelope.style.transform='translateY(0) scale(1)',220);
+  digits[0].focus();
+  createParticles(letter,50,45,40);
+});
+
+digits.forEach((input,idx)=>{
+input.addEventListener('input',()=>{
+input.value=input.value.replace(/\D/g,'');
+if(input.value && idx<digits.length-1) digits[idx+1].focus();
+checkCode();
+});
+input.addEventListener('keydown',(e)=>{
+if(e.key==='Backspace' && !input.value && idx>0) digits[idx-1].focus();
+});
+});
+
+function checkCode(){
+const code=digits.map(d=>d.value).join('');
+if(code.length===4) validateCode(code);
+}
+
+function createParticles(container,xPct=50,yPct=50,count=30){
+for(let i=0;i<count;i++){
+const p=document.createElement('div');
+p.className='particle';
+const angle=Math.random()*2*Math.PI;
+const dist=Math.random()*140+40;
+const rect=container.getBoundingClientRect();
+const startX=rect.left+rect.width*(xPct/100);
+const startY=rect.top+rect.height*(yPct/100);
+p.style.left=startX+'px';
+p.style.top=startY+'px';
+const dx=Math.cos(angle)*dist;
+const dy=Math.sin(angle)*dist-80;
+p.style.setProperty('--x',dx+'px');
+p.style.setProperty('--y',dy+'px');
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),1400);
+}
+}
+
+function startFalling(){
+if(fallInterval) return;
+fallInterval=setInterval(()=>{
+const el=document.createElement('div');
+el.className='falling';
+el.textContent=Math.random()>0.5?'💗':'🌹';
+el.style.left=(Math.random()*100)+'vw';
+el.style.fontSize=(22+Math.random()*20)+'px';
+el.style.opacity=(0.6+Math.random()*0.4);
+el.style.animationDuration=(4+Math.random()*5)+'s';
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),10000);
+},300);
+}
+
+function showPage(idx){
+pages.forEach(p=>p.classList.remove('active'));
+pages[idx].classList.add('active');
+currentPage=idx;
+createParticles(letter,50,50,40);
+}
+
+nextBtn.addEventListener('click',()=>{if(currentPage<pages.length-1) showPage(currentPage+1);});
+prevBtn.addEventListener('click',()=>{if(currentPage>0) showPage(currentPage-1);});
+document.addEventListener('keydown',(e)=>{if(letter.style.transform.includes('scale(1)')){if(e.key==='ArrowRight') nextBtn.click(); if(e.key==='ArrowLeft') prevBtn.click();}});
+
+muteBtn.addEventListener('click',()=>{
+muted=!muted;
+bgMusic.muted=muted;
+magicSound.muted=muted;
+errorSound.muted=muted;
+muteBtn.textContent=muted?'🔇':'🔊';
+});
+
+function validateCode(code){
+if(code==='7777'){
+codeValidated=true;
+msgBad.style.display='none';
+msgBadNote.style.display='none';
+msgGood.style.display='block';
+magicSound.currentTime=0;magicSound.play().catch(()=>{});
+if(successTimer) clearTimeout(successTimer);
+successTimer=setTimeout(()=>{
+msgGood.style.display='none';
+codeValidated=false;
+lock.style.display='none';
+envWrap.style.transform='translate(-50%,-50%) translateY(-150px) scale(0.8) rotate(-10deg)';
+envelope.style.transform='translateY(-120px) scale(.7)';
+createParticles(letter,50,45,40);
+setTimeout(()=>{
+letter.style.transform='translate(-50%,-50%) scale(1)';
+showPage(0);
+startFalling();
+candle.style.opacity=1;
+bgMusic.volume=0.35;bgMusic.play().catch(()=>{});
+},200);
+},5000);
+}else{
+msgGood.style.display='none';
+msgBad.style.display='block';
+msgBadNote.style.display='block';
+errorSound.currentTime=0;errorSound.play().catch(()=>{});
+lock.style.transform='translate(-50%,-50%) translateX(-6px)';
+setTimeout(()=>lock.style.transform='translate(-50%,-50%) translateX(0)',140);
+if(wrongTimer) clearTimeout(wrongTimer);
+wrongTimer=setTimeout(()=>{digits.forEach(d=>d.value='');digits[0].focus();msgBad.style.display='none';msgBadNote.style.display='none';},1400);
+}
+}
+</script>
+</body>
+</html>
